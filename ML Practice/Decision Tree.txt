@@ -1,0 +1,70 @@
+Decision Tree: (for its 2nd question there is change of extracting different columns)
+import pandas as pd
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+import matplotlib.pyplot as plt
+
+df.head()
+
+Check for missing values:
+df.isnull().sum()
+
+If there is NaN values
+
+then we will handle them by categorical and numerical values
+
+for col in df.columns:
+	if df[col].dtype == 'object':
+		df[col] = df[col].fillna(df[col].mode[0])
+	else:
+		if abs(df[col].skew()) < 1:
+			df[col] = df[col].fillna(df[col].mean)
+		else:
+			df[col] = df[col].fillna(df[col].median)
+
+Remove pointless data before splitting
+train_test_split() to split the data
+
+Also take feature_col names for plotting tree
+feature_names = list(X.columns)
+
+train the model
+t = tree.DecisionTreeClassifier(max_depth=3) # we can use criterion to use gini , information_gain or entropy
+t.fit(X_train,y_train)
+
+evaluate it using accuracy classification report confusion matrix
+y_pred = t.predict(X_test)
+accuracy_score(y_test,y_pred)
+class
+confusion
+
+plot the tree
+plt.figure(figsize=(10,6))
+plot_tree(t,filled=True,rounded=True,label=['Not Eligible','Eligible'],feature_names=feature_names,max_depth=10,fontsize=15)
+plt.title("Decision Tree")
+plt.show()
+plt.savefig('decision_tree_1.png')
+
+
+take the user input to test prediction:
+take all the categorical values and numerical values in respective variable
+input_data = {}
+add the data in the dict according to column:value pair format
+
+once dict is ready
+convert it to DataFrame using this step
+
+input_df = pd.DataFrame([inout_data])
+
+make the order of columns correct to training data by
+input_df = input_df[feature_names]
+
+predict on this new df
+
+predict proba to get confidence get the result accordingly
+
+
+
+
+
+			

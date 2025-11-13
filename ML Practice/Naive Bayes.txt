@@ -1,0 +1,39 @@
+Naive Bayes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+load the dataset
+df = pd.read_csv('NaiveBayes.csv')
+
+df.head()
+
+check for missing values
+df.isnull().sum()
+
+split the data
+X = df.drop('Purchased',axis=1)
+y = df['Purchased']
+
+use train_test_split to split the data
+
+do the feature scaling
+s = StandardScaler()
+X_train_scaled = s.fit_transform(X_train)
+X_test_scaled = s.transform(X_test)
+
+Train the model
+model = GaussianNB()
+model.fit(X_train_scaled,y_train)
+
+y_pred = model.predict(X_test_scaled)
+
+calculate and display the accuracy classification report and confusion matrix
+
+take a user input to display the result
+
+if u use feature scaling then do it for input tooo!!!

@@ -1,0 +1,73 @@
+Apriori:
+
+import pandas as pd
+import numpy as np
+
+read df
+df = pd.read_csv("Order1.csv")
+
+df.head()
+
+check for missing values
+df.isnull().sum()
+
+create transaction list
+transactions_series = df.groupby(['Member_number','Date'])['itemDescription'].apply(list)
+transactions = list(transaction_series)
+print it and take the length of it to get the no of transactions
+
+encoding transaction
+from mlxtend.preprocessing import TransactionEncoder
+te = TransactionEncoder()
+te_ary  te.fit(transactions).transform(transactions)
+df_onehot = pd.DataFrame(te_ary,columns=te.columns_)
+df_onehot.head()
+
+train for apriori
+from mlxtend.frequent_patterns import apriori, association_rules
+
+first calculate support
+min_supp = 50/len(transactions)
+
+second train apriori
+frequent_itemsets = apriori(df_onehot,min_support=min_support,use_colnames=True)
+print(frequent_itemsets.sort_value(by='support',ascending=False).head())
+
+third association rules
+rules = association_rules(frequent_itemsets.metric='lift',min_threshold=1.0)
+rules_sorted = rules.sort_values(by=[ confidence lift], ascending=False)
+print(rules_sorted)
+
+Take the user input
+item = input()
+item_set = frozenset({item})
+display rules
+print(rules_sorted[rules_sorted['antecedents'] == item_set)
+
+
+for the 2nd question in this make transaction list like this
+transactions = []
+for i in range(len(df)):
+	transaction = []
+	for item in df.values[i]:
+		if not pd.na(item):
+			transaction.append(str(item).strip())
+	transactions.append(transaction)
+
+Some key terminology:
+support - tells how frequent an item appears in set
+confidence - how often item B appears given that contain A
+lift - how much more likely items A and B occur together than if they were independent
+antecedents - if
+consequents - else
+
+
+
+for 3rd question make transaction like this...
+transaction_series = df.groupby('TransactionNo')['Items'].apply(list)
+transactions = list(transaction_series)
+
+
+
+
+

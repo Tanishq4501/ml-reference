@@ -1,0 +1,41 @@
+SVM
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler 
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+load the dataset
+df = pd.read_csv('test.csv')
+
+df.head()
+
+check for missing values
+df.isnull().sum()
+
+Split the dataset
+X = df.drop('price_range',axis=1)
+y = df['price_range']
+
+use train_test_split to split the data
+
+then perform feature scaling 
+
+train the models on different kernels like linear, rbf, poly
+
+model = SVC(kernel=kernel,C=1,random_state=42)
+.fit
+.predict
+acc
+classfic
+confusion
+
+plot the comparision chart
+plt.bar(results.keys(),results.values())
+plt.title()
+plt.ylabel(Accuracy)
+plt.show()
+plt.savefig()
+

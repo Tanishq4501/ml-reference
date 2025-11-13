@@ -1,0 +1,64 @@
+Hierarchical:
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
+import scipy.cluster.hierarchy as shc
+
+load the dataset
+
+df.isnull().sum()
+
+do label encoding 
+
+split the dataset
+X = df[['effective_literacy_rate_total']]
+
+do the feature scaling
+
+perform hierarchical clustering
+linked = linkages(X_scaled,method='ward')
+
+plot the dendrogram  IMPORTANT ----->>>> ---->>>>>
+plt.figure(figsize=(10,6))
+dendrogram(linked,orientation='top',distance_sort='descending') // p= 20 truncated_mode=last_p show_contracted=True
+plt.title('Dendrogram')
+plt.xlabel('Cities')
+plt.ylabel('Euclidean Distances')
+plt.show()
+plt.savefig()
+
+optimal_k = 3
+df['cluster'] = fcluster(linked,optimal_k,criterion='maxclust')
+
+print(df['cluster'].value_count().sort_index())
+
+plt.figure(figsize=(12,7)) IMPORTANT ----->>>> ---->>>>>
+sns.stripplot(x='effect',y='cluster',data=df,palette=viridis,hue=cluster,jitter=0.3,alpha=0.7,orient='h')
+plt.title('Hierarchical Clustering Result')
+plt.xlabel('Effective Literacy')
+plt.ylabel('Cluster')
+plt.yticks(ticks=range(optimal_k))
+plt.legend().remove()
+plt.grid(axis='x')
+plt.show()
+plt.savefig()
+
+
+Merge the two clusters that are closest, based on a linkage criterion (e.g., Ward, Single, Complete, Average).
+
+Ward’s method is a variance-minimizing approach — it merges clusters in a way that causes the smallest possible increase in total within-cluster variance (sum of squared differences). inshort minimizes the inertia
+
+There are two main types:
+
+Agglomerative (bottom-up) — starts with each point as its own cluster and merges similar clusters step by step.
+
+Divisive (top-down) — starts with one big cluster and splits it recursively.
+
+
+K-Means is much better for predicting new samples, while Hierarchical Clustering is better for understanding the structure and relationships within your existing data.
+
+
+
+

@@ -1,0 +1,74 @@
+K-Means
+
+import pandas as pd
+import numpy as np
+
+read the data
+df = pd.read_csv("cities_r2.csv")
+
+df.head()
+
+check for missing values
+df.isnull().sum()
+
+label encoding - if required
+from sklearn.preprocessing import LabelEncoder
+
+for col in df.columns:
+	if df[col].dtype == 'object':
+		df[col] = le.fit_transform(df[col])
+df.head()
+
+Select the feature for clustering 
+X = df[['total_graduates']]
+
+do the feature scaling using Standard Scaler
+
+use elbow method to determine optimal_k  IMPORTANT ----->>>> ----->>>>
+inertia = []
+k_range = range(1,11)
+
+for k in k_range:
+	km = KMeans(n_clusters=k,init='kmeans++',random_state=42)
+	km.fit(X_scaled)
+	inertia.append(km.inertia_)
+
+plot the Elbow curve using Matplotlib IMPORTANT ----->>>> ----->>>>
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10,6))
+plt.plot(k_range,inertia,marker='o',linestyle='--')
+plt.title('Elbow Curve')
+plt.xlabel(NO of cluster)
+plt.ylabel(inertia)
+plt.grid(True)
+plt.show()
+plt.savefig()
+
+use the optimal_k value to define clusters
+optimal_k = 3
+kmeans = KMeans(n_clusters=optimal_k,random_state=0)
+df['cluster'] = kmeans.fit_predict(X)
+
+Calculate centers for Visualizations  IMPORTANT ----->>>> ----->>>>
+centers = kmeans.cluster_centers_
+sorted_centers  np.sort(centers,axis=0)
+
+import seaborn as sns
+plt.figure(figsize=(12,7))
+sns.stripplot(x='total_graduates',y='cluster',data=df,palette='viridis',hue='cluster',jitter=0.3,alpha=0.7,orient='h')
+center_df = pd.DataFrame({'cluster':range(4), 'center':centers.flatten})
+sns.scatterplot(x='center',y='cluster',data=center_df,color='red',marker='X',label='Cluster Centers')
+plt.title('KMeans Clustering')
+plt.xlabel('Total Cluster')
+plt.ylabel('Cluster')
+plt.yticks(ticks=range(optimal_k))
+plt.legend()
+plt.grid(axis='x')
+plt.savefig()
+
+
+display cluster wise count
+print(df['cluster'].value_coun().sort_index())
+
+take user input for predicting cluster

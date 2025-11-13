@@ -1,0 +1,70 @@
+Regression:
+import pandas as pd
+import numpy as np
+
+read the dataset
+df = pd.read_csv("diabetes.csv")
+
+df.head()
+
+check for missing values
+df.isnull().sum()
+
+split the dataset 
+X = df[['DiabetesPedigreeFunction']]
+y = df['Outcome']
+
+use train_test_split to split the data
+
+Train the model
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+
+model = LinearRegression()
+model.fit(X_train,y_train)
+
+Evaluate the model using coefficients 
+y_pred = model.predict(y_test,y_pred)
+
+rss = np.sum((y_test-y_pred)**2)
+r2 = r2_score(y_test,y_pred)
+mse  mean_squared_error(y_test,y_pred)
+
+Show model parameters to derive the linear equations
+coefficient = model.coef_[0]
+interceipt = model.intercept_
+
+plot the linear graph    IMP
+import seaborn as sns
+
+plt.figure(figsize=(10,6))
+sns.scatterplot(x='',y='',data=df,color='blue',label='Actual Data')
+plt.plot(X_test,y_pred,color='red')
+plt.title("SAT Score VS GPA")
+plt.xlabel("SAT Score")
+plt.ylabel("GPA")
+plt.legend()
+plt.show()
+plt.savefig('linear_regression_1.png')
+
+display other results...
+
+take user input to test the prediction like this
+sat_score = float(input("Enter yours SAT Score"))
+
+d = {"SAT":sat_score}
+
+df = pd.DataFrame([d])
+
+df = df[list(X.columns)]
+
+y_p = model.predict(df)
+
+print(y_p[0])
+
+Some terminologies:
+RSS	Total error across all points
+MSE	Average of squared errors
+RMSE	Typical prediction error (in same units)
+MAE	Average distance between predicted and actual values
+R²	How much variation is captured by the model
